@@ -2,9 +2,26 @@
 /**
  * Git deploy script
  *
- * Hannes Ebner <hannes@ebner.se>
+ * Author: Hannes Ebner <hannes@ebner.se>, 2014
  *
- * Inspired by https://github.com/markomarkovic/simple-php-git-deploy/
+ * Clones a Git repository to deploy it to a local path. Subsequent calls may
+ * fetch instead of clone, provided the temporary directory is not configured
+ * to be cleared.
+ *
+ * Inspired by https://github.com/markomarkovic/simple-php-git-deploy/.
+ *
+ * Possible sources of failure:
+ *
+ * - The public key of www-data has to have read access to the repository.
+ * - The connection will fail if the SSH server is not trusted, to avoid this the
+ *   server should be access from the command line at least once to get its
+ *   fingerprint into the local SSH configuration.
+ *
+ * License
+ *
+ * Hannes Ebner licenses this work under the terms of the Apache License 2.0
+ * (the "License"); you may not use this file except in compliance with the
+ * License. See the LICENSE file distributed with this work for the full License.
  */
 
 //// Main settings
@@ -21,25 +38,25 @@ define('BRANCH', 'master');
 // The location to deploy to. Trailing slash is required
 define('TARGET_DIR', '/var/www/site/');
 
-//// Optional settings below
+//// Optional settings
 
 // Whether to delete the files that are not in the repository but are on the local (server) machine.
-if (!defined('DELETE_FILES')) define('DELETE_FILES', false);
+define('DELETE_FILES', false);
 
 // The directories and files that are to be excluded. Rsync exclude pattern syntax for each element.
-if (!defined('EXCLUDE')) define('EXCLUDE', serialize(array('.git', '.gitignore')));
+define('EXCLUDE', serialize(array('.git', '.gitignore')));
 
 // A temporary directory, the default setting probably works
-if (!defined('TMP_DIR')) define('TMP_DIR', '/tmp/gds-'.md5(REMOTE_REPOSITORY).'/');
+define('TMP_DIR', '/tmp/gds-'.md5(REMOTE_REPOSITORY).'/');
 
 // Whether to remove the TMP_DIR after the deployment
-if (!defined('CLEAN_UP')) define('CLEAN_UP', true);
+define('CLEAN_UP', true);
 
 // Output the version of the deployed code
-if (!defined('VERSION_FILE')) define('VERSION_FILE', TMP_DIR.'VERSION.txt');
+define('VERSION_FILE', TMP_DIR.'VERSION.txt');
 
 // Time limit for each command
-if (!defined('TIME_LIMIT')) define('TIME_LIMIT', 30);
+define('TIME_LIMIT', 30);
 
 ?>
 <!DOCTYPE html>
