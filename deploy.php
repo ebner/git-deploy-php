@@ -70,6 +70,18 @@ define('TIME_LIMIT', 30);
 if (!isset($_GET['token']) || $_GET['token'] !== ACCESS_TOKEN) {
 	die('Access denied');
 }
+
+if (isset($_GET['async'])) {
+        ob_end_clean();
+        header("Connection: close");
+        ignore_user_abort(true);
+        ob_start();
+        $size = ob_get_length();
+        header("Content-Length: $size");
+        http_response_code(202);
+        ob_end_flush();
+        flush();
+}
 ?>
 <pre>
 
