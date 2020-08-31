@@ -47,7 +47,7 @@ define('DELETE_FILES', false);
 define('EXCLUDE', serialize(array('.git', '.gitignore')));
 
 // A temporary directory, the default setting probably works
-define('TMP_DIR', '/tmp/gds-'.md5(REMOTE_REPOSITORY).'/');
+define('TMP_DIR', '/tmp/gds-'.md5(REMOTE_REPOSITORY).'-'.BRANCH.'/');
 
 // Whether to remove the TMP_DIR after the deployment
 define('CLEAN_UP', true);
